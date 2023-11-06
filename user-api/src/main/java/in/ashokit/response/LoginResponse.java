@@ -9,7 +9,19 @@ public class LoginResponse {
     private String name;
     private String userType;
 
+    private boolean pwdChanged;
+
+    private boolean isValidLogin;
+
     private DashboardResponse dashboardResponse;
+
+    public void setValidLogin (boolean validLogin){
+        isValidLogin = validLogin;
+    }
+
+    public void setPwdChanged (boolean pwdChanged){
+        this.pwdChanged = pwdChanged;
+    }
 
     public Integer getUserId (){
         return userId;
