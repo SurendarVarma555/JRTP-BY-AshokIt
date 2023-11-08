@@ -15,7 +15,7 @@ public class SignUpRequest {
     private Long phone;
     private long ssn;
     private String userType;
-    private boolean pwdChanged;
+    private String pwdChanged;
 
     public Integer getUserId (){
         return userId;
@@ -89,11 +89,11 @@ public class SignUpRequest {
         this.userType = userType;
     }
 
-    public boolean isPwdChanged (){
+    public String getPwdChanged (){
         return pwdChanged;
     }
 
-    public void setPwdChanged (boolean pwdChanged){
+    public void setPwdChanged (String pwdChanged){
         this.pwdChanged = pwdChanged;
     }
 }

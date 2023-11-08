@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
         signUpRequest.setPwd(tempPwd);
 
-        signUpRequest.setPwdChanged(false);
+        signUpRequest.setPwdChanged("false");
 
         // save userinfo record in db
         UserInfoEntity entity = new UserInfoEntity();
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
             response.setUserId(user.getUserid());
             response.setUserType(user.getUserType());
 
-            if (user.isPwdChanged()) {
+            if (user.getPwdChanged().equals("true")) {
                 //second login
                 response.setPwdChanged(true);
                 response.setValidLogin(true);
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
             // update pwd
             UserInfoEntity entity = userById.get();
             entity.setPwd(pwdChangeRequest.getPwd());
-            entity.setPwdChanged(true);
+            entity.setPwdChanged("true");
             userInfoRepository.save(entity);
 
             // construct dashboard response
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
 
         String subject = "IES - Recover password";
 
-        String body = "Your password :: " + user.getPwd();
+        String body = "Yours Pwd To Login into IES :: " + user.getPwd();
 
         boolean isSent = emailUtils.sendEmail(email, subject, body);
 
