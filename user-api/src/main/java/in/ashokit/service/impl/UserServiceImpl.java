@@ -7,6 +7,7 @@ import in.ashokit.request.PwdChangeRequest;
 import in.ashokit.request.SignUpRequest;
 import in.ashokit.response.DashboardResponse;
 import in.ashokit.response.LoginResponse;
+import in.ashokit.response.SignUpResponse;
 import in.ashokit.service.UserService;
 import in.ashokit.utils.EmailUtils;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,23 @@ public class UserServiceImpl implements UserService {
     private EmailUtils emailUtils;
 
     @Override
-    public boolean saveUser (SignUpRequest signUpRequest){
+    public SignUpResponse saveUser (SignUpRequest signUpRequest){
+
+        /*
+        before saving the user record
+        Email Validation: we have to check user is exist or not
+        email validation done by fetching the email if its exist we have to return false
+        then remain code won't be excute
+        * */
+        SignUpResponse response = new SignUpResponse();
+
+        UserInfoEntity userRecordFindByEmail = userInfoRepository.findByEmail(signUpRequest.getEmail());
+
+        if(userRecordFindByEmail!=null){
+            response.setErrorMsg("Duplicate Email");
+            return response;
+        }
+
 
         // generate temporary password
         String tempPwd = generateTempPwd();
@@ -52,7 +69,14 @@ public class UserServiceImpl implements UserService {
 
         boolean isSent = emailUtils.sendEmail(signUpRequest.getEmail(), subject, body);
 
-        return (isSent) ? true : false;
+        if(isSent){
+            response.setSuccessMsg("Registration Success");
+        }
+        else{
+            response.setErrorMsg("Registration Failed");
+        }
+
+        return response;
 
     }
 
