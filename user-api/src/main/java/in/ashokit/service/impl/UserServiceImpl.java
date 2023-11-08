@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
         String subject = "IES - Account created";
 
-        String body = "Your Pwd to login ::  " + tempPwd;
+        String body = "Yours Pwd To Login into IES ::  " + tempPwd;
 
         boolean isSent = emailUtils.sendEmail(signUpRequest.getEmail(), subject, body);
 
