@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,6 +49,23 @@ public class AppRegServiceImpl implements AppRegService {
 
     @Override
     public List<CitizenApp> getApplications (Integer userId, String userType){
-        return null;
+
+        List<CitizenAppEntity> entities = null;
+
+        List<CitizenApp> citizenApps = new ArrayList<>();
+
+        if (userType.equals("Admin")) {
+            entities = repository.findAll();
+        } else {
+            entities = repository.findByCreatedBy(userId);
+        }
+
+        for (CitizenAppEntity entity : entities) {
+            CitizenApp app = new CitizenApp();
+            BeanUtils.copyProperties(entity, app);
+            citizenApps.add(app);
+        }
+
+        return citizenApps;
     }
 }
