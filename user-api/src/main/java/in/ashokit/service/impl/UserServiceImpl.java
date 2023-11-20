@@ -97,6 +97,7 @@ public class UserServiceImpl implements UserService {
             UserInfoEntity user = entities.get(0);
 
             response.setUserId(user.getUserid());
+            response.setName(user.getName());
             response.setUserType(user.getUserType());
 
             if (user.getPwdChanged().equals("true")) {
@@ -140,6 +141,7 @@ public class UserServiceImpl implements UserService {
             // construct dashboard response
 
             response.setUserId(entity.getUserid());
+            response.setName(entity.getName());
             response.setUserType(entity.getUserType());
 
 
