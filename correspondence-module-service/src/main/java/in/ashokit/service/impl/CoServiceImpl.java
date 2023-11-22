@@ -14,7 +14,6 @@ import in.ashokit.utils.PdfUtils;
 import in.ashokit.utils.S3Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -47,15 +46,7 @@ public class CoServiceImpl implements CoService {
 
         List<CoInfo> records = new ArrayList<>();
 
-        AppEntity app = new AppEntity();
-        app.setCaseNum(caseNum);
-
-        CoEntity coEntity = new CoEntity();
-        coEntity.setApp(app);
-        coEntity.setNoticeStatus(status);
-
-        Example<CoEntity> of = Example.of(coEntity);
-        List<CoEntity> entities = coRepo.findAll(of);
+        List<CoEntity> entities = coRepo.fetchByCaseNum(caseNum); //Get list of entities by using custom query method
 
         for (CoEntity co : entities) {
             CoInfo info = new CoInfo();
@@ -72,16 +63,8 @@ public class CoServiceImpl implements CoService {
         Integer caseNum = coEntity.getApp().getCaseNum();
         AppEntity appEntity = appRepo.findById(caseNum).get();
 
-        //get Eligibility data
 
-        AppEntity app = new AppEntity();
-        app.setCaseNum(caseNum);
-
-        EligDtlsEntity edEntity = new EligDtlsEntity();
-        edEntity.setApp(app);
-
-        List<EligDtlsEntity> edRecords = eligDtlsRepo.findAll(Example.of(edEntity));
-        EligDtlsEntity eligDtlsEntity = edRecords.get(0);
+        EligDtlsEntity eligDtlsEntity = eligDtlsRepo.fetchByCaseNum(caseNum); //To get Eligibility Record by using custom query :fetchByCaseNum
 
         EligInfo eligInfo = new EligInfo();
         BeanUtils.copyProperties(eligDtlsEntity, eligInfo);
